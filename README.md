@@ -1,59 +1,42 @@
-# FormBuilder
+# Form Builder Documentation
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.1.
+## Overview
 
-## Development server
+The Form Builder is a simple web application that allows users to add fields and preview them. It provides a basic interface for designing forms with various input fields.
 
-To start a local development server, run:
+### Technologies Used
 
-```bash
-ng serve
-```
+- **Frontend**: Angular with Angular Material and Bootstrap.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## Setup Instructions
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Frontend Setup
 
-```bash
-ng generate component component-name
-```
+1. **Clone the Repository**:
+   ```sh
+   git clone https://github.com/Kabir-Pandya29/Form-Builder.git
+   ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+2. **Navigate to the Project Directory**:
+   ```sh
+   cd form-builder
+   ```
 
-```bash
-ng generate --help
-```
+3. **Install Dependencies**:
+   ```sh
+   npm install
+   ```
 
-## Building
+4. **Start the Development Server**:
+   ```sh
+   ng serve
+   ```
 
-To build the project run:
+5. **Access the Application**:
+   Open your browser and navigate to `http://localhost:4200/`.
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Now you can add fields and preview them in the application!
