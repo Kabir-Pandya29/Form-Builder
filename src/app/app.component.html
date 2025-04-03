@@ -1,10 +1,16 @@
-<div class="d-flex gap-3">
-  <div class="flex-fill border p-3">
-    <!-- Form Builder Component -->
-    <app-form-builder></app-form-builder>
+<div class="d-flex">
+  <!-- Sidebar -->
+  <div class="sidebar" [class.expanded]="isSidebarExpanded">
+    <button (click)="toggleSidebar()">
+      {{ isSidebarExpanded ? 'Close' : 'Open' }} Sidebar
+    </button>
+    <div *ngIf="isSidebarExpanded">
+      <app-form-builder></app-form-builder>
+    </div>
   </div>
+
+  <!-- Form Preview -->
   <div class="flex-fill border p-3">
-    <!-- Form Component -->
     <app-form></app-form>
   </div>
 </div>

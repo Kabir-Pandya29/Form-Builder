@@ -1,20 +1,25 @@
 <form (ngSubmit)="onSubmit(formBuilderForm)" #formBuilderForm="ngForm" class="p-3 border rounded bg-light">
   <div class="mb-3">
-    <label for="fieldName" class="form-label">Field Name:</label>
-    <input type="text" id="fieldName" name="fieldName" ngModel required class="form-control" />
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Field Name</mat-label>
+      <input matInput type="text" id="fieldName" name="fieldName" ngModel required />
+    </mat-form-field>
   </div>
   <div class="mb-3">
-    <label for="fieldType" class="form-label">Field Type:</label>
-    <select id="fieldType" name="fieldType" ngModel required class="form-select">
-      <option value="text">Text</option>
-      <option value="number">Number</option>
-      <option value="email">Email</option>
-    </select>
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Field Type</mat-label>
+      <mat-select id="fieldType" name="fieldType" ngModel required>
+        <mat-option value="text">Text</mat-option>
+        <mat-option value="number">Number</mat-option>
+        <mat-option value="email">Email</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
-  <button type="submit" class="btn btn-primary">Add Field</button>
+  <button mat-raised-button color="primary" type="submit">Add Field</button>
 </form>
 <div class="mt-4">
   <div *ngFor="let field of fields" class="p-2 border rounded mb-2">
     <p class="mb-0"><strong>{{ field.name }}</strong> ({{ field.type }})</p>
   </div>
 </div>
+<button mat-raised-button color="primary" (click)="closeDialog()">Close</button>

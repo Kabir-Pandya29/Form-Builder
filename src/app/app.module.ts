@@ -7,6 +7,7 @@ import { FormsModule } from "@angular/forms";
 import { MaterialModule } from "./shared/material/material.module";
 import { FormComponent } from "./components/form/form.component";
 import { FormBuilderComponent } from "./components/form-builder/form-builder.component";
+import { DragDropModule } from "@angular/cdk/drag-drop";
 
 @NgModule({
     declarations: [
@@ -19,9 +20,10 @@ import { FormBuilderComponent } from "./components/form-builder/form-builder.com
         BrowserAnimationsModule,
         AppRoutingModule,
         FormsModule,
-        MaterialModule
+        MaterialModule, // Consolidated Angular Material imports
+        DragDropModule,
     ],
     providers: [],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 export class AppModule { }

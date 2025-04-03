@@ -1,1 +1,59 @@
-<p>form works!</p>
+<form #form="ngForm" (ngSubmit)="onSubmit(form)" class="p-3">
+  <div *ngIf="fields.length === 0" class="error-div">
+    No data to show.
+  </div>
+  <div
+    *ngIf="fields.length > 0"
+    cdkDropList
+    [cdkDropListData]="fields"
+    (cdkDropListDropped)="onDragDrop($event)"
+    class="drop-list mb-3"
+  >
+    <div
+      *ngFor="let field of fields; let i = index"
+      cdkDrag
+      class="field-container mb-2"
+    >
+      <mat-card class="p-2">
+        <div class="d-flex align-items-center">
+          <label [for]="field.name" class="form-label me-2">{{ field.name }}</label>
+          <mat-icon cdkDragHandle class="drag-handle">drag_handle</mat-icon>
+        </div>
+        <mat-form-field appearance="outline" class="w-100">
+          <input
+            matInput
+            [id]="field.name"
+            [name]="field.name"
+            [type]="field.type"
+            ngModel
+            #fieldCtrl="ngModel"
+            [email]="field.type === 'email'"
+            required
+          />
+          <mat-error *ngIf="fieldCtrl.invalid && fieldCtrl.touched">
+            <span *ngIf="fieldCtrl.errors?.['required']">{{ field.name }} is required.</span>
+            <span *ngIf="fieldCtrl.errors?.['email']">Invalid email format.</span>
+          </mat-error>
+        </mat-form-field>
+      </mat-card>
+    </div>
+  </div>
+  <button
+    type="submit"
+    mat-raised-button
+    color="primary"
+    class="w-100"
+    [disabled]="form.invalid"
+  >
+    Submit
+  </button>
+  <button
+    type="button"
+    mat-raised-button
+    color="warn"
+    class="w-100 mt-2"
+    (click)="clearFormData()"
+  >
+    Clear
+  </button>
+</form>

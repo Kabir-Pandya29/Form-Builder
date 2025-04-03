@@ -1,0 +1,64 @@
+.error-div {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.drop-list {
+  border: 1px dashed #ccc;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.field-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.drag-handle {
+  cursor: grab;
+  margin-left: auto;
+  color: #757575;
+}
+
+mat-card {
+  margin-bottom: 15px;
+}
+
+mat-card-header {
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+}
+
+mat-card-actions {
+  margin-top: 15px;
+}
+
+.toast-message {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  border-radius: 5px;
+  text-align: center;
+}
+
+::ng-deep .snackbar-success {
+  background-color: #d4edda !important;
+  color: green !important;
+  font-weight: bold;
+}
+
+::ng-deep .snackbar-error {
+  background-color: #f8d7da !important;
+  color: red !important;
+  font-weight: bold;
+}

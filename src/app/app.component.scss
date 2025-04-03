@@ -1,0 +1,41 @@
+.d-flex {
+  display: flex;
+  height: 100vh; // Ensure full height
+}
+
+.sidebar {
+  height: 100%; // Full height for sidebar
+  width: 70px;
+  transition: width 0.3s;
+  overflow: hidden;
+  background-color: #f4f4f4;
+  border-right: 1px solid #ddd;
+
+  &.expanded {
+    width: 250px;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+.flex-fill {
+  height: 100%; // Full height for form preview
+}
+
+.empty-preview {
+  color: red;
+  text-align: center;
+  padding: 20px;
+  border: 1px solid red;
+  height: 100px; // Ensure the red div covers full height
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
