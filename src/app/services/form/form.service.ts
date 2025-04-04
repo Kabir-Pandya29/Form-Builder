@@ -6,7 +6,16 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class FormService {
   private readonly storageKey = 'formData';
-  private formDataSubject = new BehaviorSubject<{ name: string; type: string }[]>(this.loadFromStorage());
+  private formDataSubject = new BehaviorSubject<
+    { 
+      name: string; 
+      type: string; 
+      label: string; 
+      placeholder?: string; 
+      validations?: any; 
+      options?: string[]; // Ensure options property is included
+    }[]
+  >(this.loadFromStorage());
   formData$ = this.formDataSubject.asObservable();
 
   constructor() {
@@ -14,7 +23,7 @@ export class FormService {
     this.syncWithStorage();
   }
 
-  saveFormData(field: { name: string; type: string }) {
+  saveFormData(field: { name: string; type: string; label: string; placeholder?: string; validations?: any; options?: string[] }) {
     const currentData = this.formDataSubject.getValue();
     const updatedData = [...currentData, field];
     this.formDataSubject.next(updatedData);
@@ -25,7 +34,7 @@ export class FormService {
     return this.formDataSubject.getValue();
   }
 
-  updateFormData(fields: { name: string; type: string }[]) {
+  updateFormData(fields: { name: string; type: string; label: string; placeholder?: string; validations?: any; options?: string[] }[]) {
     this.formDataSubject.next(fields);
     this.saveToStorage(fields);
   }
@@ -35,11 +44,11 @@ export class FormService {
     this.formDataSubject.next([]);
   }
 
-  private saveToStorage(fields: { name: string; type: string }[]) {
+  private saveToStorage(fields: { name: string; type: string; label: string; placeholder?: string; validations?: any; options?: string[] }[]) {
     localStorage.setItem(this.storageKey, JSON.stringify(fields));
   }
 
-  private loadFromStorage(): { name: string; type: string }[] {
+  private loadFromStorage(): { name: string; type: string; label: string; placeholder?: string; validations?: any; options?: string[] }[] {
     const storedData = localStorage.getItem(this.storageKey);
     return storedData ? JSON.parse(storedData) : [];
   }

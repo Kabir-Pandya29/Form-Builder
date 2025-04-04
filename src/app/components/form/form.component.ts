@@ -12,7 +12,16 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   standalone: false,
 })
 export class FormComponent implements OnInit {
-  fields: { name: string; type: string }[] = [];
+  fields: { 
+    name: string; 
+    type: string; 
+    label: string; 
+    placeholder?: string; 
+    validations?: any; 
+    options?: string[]; 
+    width?: string; // Add width for resizing
+    isEditing?: boolean; // Add isEditing for toggling edit mode
+  }[] = [];
 
   constructor(
     private formService: FormService,
@@ -43,15 +52,52 @@ export class FormComponent implements OnInit {
     }
   }
 
+  renderField(field: { name: string; type: string; label: string; placeholder?: string; validations?: any }) {
+    switch (field.type) {
+      case 'text':
+      case 'textarea':
+        return `<label>${field.label}</label>
+                <input type="${field.validations?.dataType || 'text'}" name="${field.name}" placeholder="${field.placeholder || ''}" 
+                ${field.validations?.required ? 'required' : ''} 
+                minlength="${field.validations?.minLength || ''}" 
+                maxlength="${field.validations?.maxLength || ''}" />`;
+      case 'select':
+        return `<label>${field.label}</label>
+                <select name="${field.name}">
+                  <!-- Options to be dynamically added -->
+                </select>`;
+      case 'checkbox':
+      case 'radio':
+        return `<label>${field.label}</label>
+                <input type="${field.type}" name="${field.name}" />`;
+      default:
+        return '';
+    }
+  }
+
   openFormBuilder() {
     this.dialog.open(FormBuilderComponent, {
       width: '500px',
     });
   }
 
-  onDragDrop(event: CdkDragDrop<{ name: string; type: string }[]>) {
+  onDragDrop(event: CdkDragDrop<any[]>) {
     moveItemInArray(this.fields, event.previousIndex, event.currentIndex);
     this.formService.updateFormData(this.fields);
+  }
+
+  resizeField(field: any, event: Event) {
+    const inputElement = event.target as HTMLInputElement; // Cast event target to HTMLInputElement
+    const newWidth = parseInt(inputElement.value, 10) + '%'; // Use parseInt here
+    field.width = newWidth;
+    this.formService.updateFormData(this.fields);
+  }
+
+  toggleEditField(field: any) {
+    field.isEditing = !field.isEditing;
+    if (!field.isEditing) {
+      this.formService.updateFormData(this.fields); // Save changes instantly
+    }
   }
 
   clearFormData() {
@@ -64,7 +110,7 @@ export class FormComponent implements OnInit {
   private showToast(message: string, colorClass: string = 'snackbar-success') {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
-      horizontalPosition: 'start',
+      horizontalPosition: 'end',
       verticalPosition: 'top',
       panelClass: [colorClass], 
     });

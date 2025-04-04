@@ -7,7 +7,7 @@
   height: 100%; // Full height for sidebar
   width: 70px;
   transition: width 0.3s;
-  overflow: hidden;
+  overflow-y: auto; 
   background-color: #f4f4f4;
   border-right: 1px solid #ddd;
 
@@ -27,6 +27,7 @@
 
 .flex-fill {
   height: 100%; // Full height for form preview
+  min-height: 40vh; // Ensure a minimum height of 40% of the viewport
 }
 
 .empty-preview {
@@ -38,4 +39,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#form-preview {
+  height: 100%;
+  min-height: 40vh; // Ensure a minimum height of 40% of the viewport
+  overflow-y: auto; // Allow scrolling if content overflows
 }
