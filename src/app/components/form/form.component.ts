@@ -20,7 +20,7 @@ export class FormComponent implements OnInit {
     validations?: any; 
     options?: string[]; 
     width?: string; // Add width for resizing
-    isEditing?: boolean; // Add isEditing for toggling edit mode
+    isEditing?: boolean; // Add is Editing for toggling edit mode
   }[] = [];
 
   constructor(

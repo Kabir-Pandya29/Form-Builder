@@ -62,7 +62,7 @@
               #fieldCtrl="ngModel"
               [required]="field.validations?.required"
             />
-            <label class="form-check-label" [for]="field.name">{{ field.label }}</label>
+            <label class="form-check-label" [for]="field.name">{{ field.name }}</label>
             <mat-error *ngIf="fieldCtrl?.invalid && fieldCtrl?.touched" class="ms-2">
               <span *ngIf="fieldCtrl.errors?.['required']">{{ field.label }} is required.</span>
             </mat-error>
