@@ -8,6 +8,9 @@ import { MaterialModule } from "./shared/material/material.module";
 import { FormComponent } from "./components/form/form.component";
 import { FormBuilderComponent } from "./components/form-builder/form-builder.component";
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { ResizableModule } from 'angular-resizable-element';
+import { CommonModule } from "@angular/common";
+
 
 @NgModule({
     declarations: [
@@ -19,9 +22,12 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
-        FormsModule, // Add FormsModule here
-        MaterialModule, // Consolidated Angular Material imports
+        FormsModule, 
+        MaterialModule, 
         DragDropModule,
+        ResizableModule,
+        CommonModule,
+        
     ],
     providers: [],
     bootstrap: [AppComponent],

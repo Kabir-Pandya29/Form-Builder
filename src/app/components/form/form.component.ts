@@ -1,26 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormBuilderComponent } from '../form-builder/form-builder.component';
 import { FormService } from '../../services/form/form.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { ResizeEvent } from 'angular-resizable-element';
 
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
-  styleUrl: './form.component.scss',
-  standalone: false,
+  styleUrls: ['./form.component.scss'],
+  standalone: false
 })
 export class FormComponent implements OnInit {
-  fields: { 
-    name: string; 
-    type: string; 
-    label: string; 
-    placeholder?: string; 
-    validations?: any; 
-    options?: string[]; 
-    width?: string; // Add width for resizing
-    isEditing?: boolean; // Add is Editing for toggling edit mode
+  fields: {
+    name: string;
+    type: string;
+    label: string;
+    placeholder?: string;
+    validations?: any;
+    options?: string[];
+    width?: string;
+    isEditing?: boolean;
   }[] = [];
 
   constructor(
@@ -34,7 +34,6 @@ export class FormComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Initialize fields with the latest data from the service
     this.fields = this.formService.getFormData();
   }
 
@@ -44,41 +43,12 @@ export class FormComponent implements OnInit {
       this.showToast('Form submitted successfully!');
       form.reset();
     } else {
-      console.error('Form is invalid. Please correct the errors and try again.');
       Object.keys(form.controls).forEach((key) => {
         const control = form.controls[key];
         control.markAsTouched();
       });
+      this.showToast('Please fix the errors in the form.', 'snackbar-error');
     }
-  }
-
-  renderField(field: { name: string; type: string; label: string; placeholder?: string; validations?: any }) {
-    switch (field.type) {
-      case 'text':
-      case 'textarea':
-        return `<label>${field.label}</label>
-                <input type="${field.validations?.dataType || 'text'}" name="${field.name}" placeholder="${field.placeholder || ''}" 
-                ${field.validations?.required ? 'required' : ''} 
-                minlength="${field.validations?.minLength || ''}" 
-                maxlength="${field.validations?.maxLength || ''}" />`;
-      case 'select':
-        return `<label>${field.label}</label>
-                <select name="${field.name}">
-                  <!-- Options to be dynamically added -->
-                </select>`;
-      case 'checkbox':
-      case 'radio':
-        return `<label>${field.label}</label>
-                <input type="${field.type}" name="${field.name}" />`;
-      default:
-        return '';
-    }
-  }
-
-  openFormBuilder() {
-    this.dialog.open(FormBuilderComponent, {
-      width: '500px',
-    });
   }
 
   onDragDrop(event: CdkDragDrop<any[]>) {
@@ -86,17 +56,20 @@ export class FormComponent implements OnInit {
     this.formService.updateFormData(this.fields);
   }
 
-  resizeField(field: any, event: Event) {
-    const inputElement = event.target as HTMLInputElement; // Cast event target to HTMLInputElement
-    const newWidth = parseInt(inputElement.value, 10) + '%'; // Use parseInt here
-    field.width = newWidth;
-    this.formService.updateFormData(this.fields);
+  resizeField(field: any, event: ResizeEvent) {
+    if (event.rectangle?.width) {
+      const container = document.querySelector('.drop-list') as HTMLElement;
+      const containerWidth = container?.offsetWidth || 1;
+      const widthPercent = (event.rectangle.width / containerWidth) * 100;
+      field.width = `${widthPercent.toFixed(2)}%`;
+      this.formService.updateFormData(this.fields);
+    }
   }
 
   toggleEditField(field: any) {
     field.isEditing = !field.isEditing;
     if (!field.isEditing) {
-      this.formService.updateFormData(this.fields); // Save changes instantly
+      this.formService.updateFormData(this.fields);
     }
   }
 
@@ -104,7 +77,6 @@ export class FormComponent implements OnInit {
     this.formService.clearFormData();
     this.fields = [];
     this.showToast('Form data cleared successfully!');
-    console.log('Form data cleared.');
   }
 
   private showToast(message: string, colorClass: string = 'snackbar-success') {
@@ -112,7 +84,7 @@ export class FormComponent implements OnInit {
       duration: 3000,
       horizontalPosition: 'end',
       verticalPosition: 'top',
-      panelClass: [colorClass], 
+      panelClass: [colorClass],
     });
   }
 }
