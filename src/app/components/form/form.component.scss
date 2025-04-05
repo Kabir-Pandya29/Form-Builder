@@ -45,9 +45,17 @@ form {
   border-color: #007bff;
 }
 
+.form-check{
+  margin-right: 10px;
+  width: 1.2rem;
+  height: 1.2rem; 
+}
+
+
 .field-container label {
   font-weight: bold;
   margin-bottom: 10px;
+  min-width: 12vw;
 }
 
 .field-container input,
@@ -73,11 +81,11 @@ form {
   margin-bottom: 10px;
 }
 
-.form-check-input {
-  margin-right: 10px;
-  width: 1.2rem;
-  height: 1.2rem;
-}
+// .form-check-input {
+//   margin-right: 10px;
+//   width: 1.2rem;
+//   height: 1.2rem;
+// }
 
 .form-check-label {
   font-size: 14px;
