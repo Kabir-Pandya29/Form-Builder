@@ -32,6 +32,7 @@ export class FormComponent implements OnInit {
   ) {
     this.formService.formData$.subscribe((fields) => {
       this.fields = fields;
+      this.initializeCheckboxModel();
     });
   }
 
@@ -49,26 +50,74 @@ export class FormComponent implements OnInit {
     });
   }
 
+
+
+
+  private initializeCheckboxModel() {
+    this.fields.forEach((field) => {
+      if (field.type === 'checkbox' && field.options) {
+        if (!this.checkboxModel[field.name]) {
+          this.checkboxModel[field.name] = {};
+        }
+        field.options.forEach((option) => {
+          if (!(option in this.checkboxModel[field.name])) {
+            this.checkboxModel[field.name][option] = false;
+          }
+        });
+      }
+    });
+  }
+  
   onSubmit(form: any) {
     // Extract checked options from checkboxModel
     const selectedCheckboxValues: { [key: string]: string[] } = {};
-
+  
     for (const fieldName in this.checkboxModel) {
       selectedCheckboxValues[fieldName] = Object.entries(this.checkboxModel[fieldName])
         .filter(([_, checked]) => checked)
         .map(([option]) => option);
     }
-
-    if (form.valid) {
+  
+    // Validation flags
+    let hasInvalidFields = false;
+  
+    // Regex patterns
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const numberRegex = /^\d+$/;
+  
+    this.fields.forEach((field) => {
+      const value = form.value[field.name];
+  
+      if (field.type === 'text' && field.validations?.dataType) {
+        const dataType = field.validations.dataType;
+  
+        if (dataType === 'email' && value && !emailRegex.test(value)) {
+          this.showToast(`${field.label} must be a valid email address.`, 'snackbar-error');
+          hasInvalidFields = true;
+        }
+  
+        if (dataType === 'number' && value && !numberRegex.test(value)) {
+          this.showToast(`${field.label} must contain only numbers.`, 'snackbar-error');
+          hasInvalidFields = true;
+        }
+  
+        if (dataType === 'text' && (value == null || value.trim() === '')) {
+          this.showToast(`${field.label} cannot be empty.`, 'snackbar-error');
+          hasInvalidFields = true;
+        }
+      }
+    });
+  
+    if (form.valid && !hasInvalidFields) {
       const formOutput = {
         ...form.value,
         ...selectedCheckboxValues,
       };
-
+  
       console.log('Form submitted:', formOutput);
       this.showToast('Form submitted successfully!');
       form.reset();
-
+  
       // Reset checkboxModel
       for (const field in this.checkboxModel) {
         for (const option in this.checkboxModel[field]) {
@@ -80,9 +129,13 @@ export class FormComponent implements OnInit {
         const control = form.controls[key];
         control.markAsTouched();
       });
-      this.showToast('Please fix the errors in the form.', 'snackbar-error');
+  
+      if (!hasInvalidFields) {
+        this.showToast('Please fix the errors in the form.', 'snackbar-error');
+      }
     }
   }
+
 
   onDragDrop(event: CdkDragDrop<any[]>) {
     moveItemInArray(this.fields, event.previousIndex, event.currentIndex);
@@ -111,14 +164,44 @@ export class FormComponent implements OnInit {
     this.fields = [];
     this.checkboxModel = {};
     this.showToast('Form data cleared successfully!');
+    this.initializeCheckboxModel(); // Reinitialize checkbox model after clearing
   }
 
-  private showToast(message: string, colorClass: string = 'snackbar-success') {
-    this.snackBar.open(message, 'Close', {
-      duration: 3000,
-      horizontalPosition: 'end',
-      verticalPosition: 'top',
-      panelClass: [colorClass],
-    });
-  }
+
+
+// Private variables for toast notifications
+// These variables are used to manage the queue of toast messages and their display status
+
+  private toastQueue: string[] = [];
+private isToastShowing = false;
+
+
+// Method to show toast notifications
+// This method adds a message to the toast queue and triggers the display of the next toast
+private showToast(message: string, colorClass: string = 'snackbar-success') {
+  this.toastQueue.push(JSON.stringify({ message, colorClass }));
+  this.displayNextToast();
+}
+
+private displayNextToast() {
+  if (this.isToastShowing || this.toastQueue.length === 0) return;
+
+  const { message, colorClass } = JSON.parse(this.toastQueue.shift()!);
+  this.isToastShowing = true;
+
+  this.snackBar.open(message, 'Close', {
+    duration: 2000,
+    horizontalPosition: 'end',
+    verticalPosition: 'top',
+    panelClass: [colorClass],
+  });
+
+  setTimeout(() => {
+    this.isToastShowing = false;
+    this.displayNextToast(); // show next in queue
+  }, 2500); // delay to show next one with margin
+}
+
+  
+
 }

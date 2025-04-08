@@ -29,7 +29,7 @@ export class FormBuilderComponent {
   constructor(
     @Optional() public dialogRef: MatDialogRef<FormBuilderComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
-    private formService: FormService
+    protected formService: FormService
   ) {
     this.formService.formData$.subscribe((fields) => {
       this.fields = fields.map(field => ({
@@ -84,6 +84,12 @@ export class FormBuilderComponent {
     field.isEditing = false;
     this.formService.updateFormData(this.fields); // Save changes instantly
   }
+
+
+  trackByIndex(index: number, item: any) {
+    return index;
+  }
+  
 
   closeDialog() {
     if (this.dialogRef) {

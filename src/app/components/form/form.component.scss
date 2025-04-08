@@ -45,13 +45,6 @@ form {
   border-color: #007bff;
 }
 
-.form-check{
-  margin-right: 10px;
-  width: 1.2rem;
-  height: 1.2rem; 
-}
-
-
 .field-container label {
   font-weight: bold;
   margin-bottom: 10px;
@@ -79,18 +72,14 @@ form {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  margin-right: 10px;
+  width: 1.2rem;
+  height: 1.2rem;
 }
-
-// .form-check-input {
-//   margin-right: 10px;
-//   width: 1.2rem;
-//   height: 1.2rem;
-// }
 
 .form-check-label {
   font-size: 14px;
 }
-
 
 .resize-handle {
   position: absolute;
@@ -102,12 +91,38 @@ form {
   z-index: 10;
 }
 
-
 mat-error {
   font-size: 12px;
   color: #f44336;
 }
 
+/* ========================
+   Snackbar / Toast Styles
+   ======================== */
+
+/* Base custom style applied via showToast() */
+::ng-deep .mat-snack-bar-container {
+  position: relative;
+  margin-bottom: 10px !important;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  max-width: 300px;
+  min-width: auto !important;
+}
+
+/* Container to stack them */
+.snack-stack-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* Success / Error themes */
 ::ng-deep .snackbar-success {
   background-color: #d4edda !important;
   color: green !important;

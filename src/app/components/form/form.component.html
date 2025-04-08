@@ -12,10 +12,14 @@
       <label [for]="field.name" class="form-label mb-2">{{ field.label }}</label>
 
       <!-- Text -->
+
+      <!-- [type]="field.validations?.dataType || 'text'" -->
+
+      
       <div *ngIf="field.type === 'text'">
         <mat-form-field appearance="outline" class="w-100">
 
-          <input matInput [id]="field.name" [name]="field.name" [type]="field.validations?.dataType || 'text'"
+          <input matInput [id]="field.name" [name]="field.name" 
             [placeholder]="field.placeholder || ''" ngModel #fieldCtrl="ngModel"
             [required]="field.validations?.required" [minlength]="field.validations?.minLength"
             [maxlength]="field.validations?.maxLength" />

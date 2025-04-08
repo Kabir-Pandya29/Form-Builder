@@ -39,6 +39,16 @@ export class FormService {
     this.saveToStorage(fields);
   }
 
+
+  updateField(index: number, updatedField: any) {
+    const currentFields = this.formDataSubject.getValue();
+    const newFields = [...currentFields]; // shallow copy of the array
+    newFields[index] = { ...updatedField }; // new object reference
+    this.formDataSubject.next(newFields);
+    this.saveToStorage(newFields);
+  }
+  
+
   clearFormData() {
     localStorage.removeItem(this.storageKey);
     this.formDataSubject.next([]);

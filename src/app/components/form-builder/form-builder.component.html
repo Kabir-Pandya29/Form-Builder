@@ -64,40 +64,51 @@
     <mat-checkbox id="required" name="required" [(ngModel)]="formBuilderForm.value.required">Required</mat-checkbox>
   </div> -->
   <button mat-raised-button color="primary" type="submit">Add Field</button>
+
+
+
+
+  <!-- Edit Fields -->
+
+
 </form>
 <div class="mt-4">
-  <div *ngFor="let field of fields; let i = index" class="p-2 border rounded mb-2">
+  <div *ngFor="let field of fields; let i = index; trackBy: trackByIndex"    class="p-2 border rounded mb-2">
     <p class="mb-0"><strong>{{ field.label || field.name }}</strong> ({{ field.type }})</p>
     <button mat-raised-button color="primary" (click)="toggleEditField(field)">Edit</button>
     <div *ngIf="field.isEditing" class="mt-2">
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Field Name</mat-label>
-        <input matInput type="text" [(ngModel)]="field.name" name="name_{{ i }}" />
+        <input matInput type="text" [(ngModel)]="field.name" name="name_{{ i }}" (ngModelChange)="formService.updateField(i, field)" />
       </mat-form-field>
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Field Label</mat-label>
-        <input matInput type="text" [(ngModel)]="field.label" name="label_{{ i }}" />
+        <input matInput type="text" [(ngModel)]="field.label" name="label_{{ i }}" (ngModelChange)="formService.updateField(i, field)" />
       </mat-form-field>
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Placeholder</mat-label>
-        <input matInput type="text" [(ngModel)]="field.placeholder" name="placeholder_{{ i }}" />
+        <input matInput type="text" [(ngModel)]="field.placeholder" name="placeholder_{{ i }}" (ngModelChange)="formService.updateField(i, field)" />
       </mat-form-field>
       <mat-checkbox [(ngModel)]="field.validations.required" name="required_{{ i }}">Required</mat-checkbox>
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Min Length</mat-label>
-        <input matInput type="number" [(ngModel)]="field.validations.minLength" name="minLength_{{ i }}" />
+        <input matInput type="number" [(ngModel)]="field.validations.minLength" name="minLength_{{ i }}" (ngModelChange)="formService.updateField(i, field)"/>
       </mat-form-field>
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Max Length</mat-label>
-        <input matInput type="number" [(ngModel)]="field.validations.maxLength" name="maxLength_{{ i }}" />
+        <input matInput type="number" [(ngModel)]="field.validations.maxLength" name="maxLength_{{ i }}" (ngModelChange)="formService.updateField(i, field)"/>
       </mat-form-field>
-      <div *ngIf="field.type === 'radio' || field.type === 'select'" class="mb-3">
+      <div *ngIf="field.type === 'radio' || field.type === 'select' || field.type === 'checkbox'" class="mb-3">
         <mat-form-field appearance="fill" class="w-100">
           <mat-label>Options (comma-separated)</mat-label>
           <input matInput type="text" [(ngModel)]="field.optionsString" (ngModelChange)="updateFieldOptions(field)" />
         </mat-form-field>
       </div>
-      <button mat-raised-button color="accent" (click)="saveFieldChanges(field)">Save</button>
+
+      <button mat-raised-button color="accent" (click)="field.isEditing = false">Done</button>
+
+
+      <!-- <button mat-raised-button color="accent" (click)="saveFieldChanges(field)">Save</button> -->
     </div>
   </div>
 </div>
