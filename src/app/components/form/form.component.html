@@ -87,7 +87,6 @@
 
       <!-- Radio -->
       <div *ngIf="field.type === 'radio'" class="mt-3">
-        <label class="mb-2">{{ field.label }}</label>
         <div class="form-check mb-1 ps-3" *ngFor="let option of field.options">
           <input type="radio" class="form-check-input me-2" [id]="field.name + '_' + option" [name]="field.name"
             [value]="option" ngModel #fieldCtrl="ngModel" [required]="field.validations?.required" />
