@@ -56,7 +56,7 @@ export class FormBuilderComponent {
           required: form.value.required || false,
           minLength: form.value.minLength || null,
           maxLength: form.value.maxLength || null,
-          dataType: form.value.dataType || 'text', // Save the selected data type
+          dataType: form.value.fieldType === 'text' ? form.value.dataType || 'text' : undefined, // Only set dataType for text fields
         },
         options: form.value.fieldOptions ? form.value.fieldOptions.split(',').map((opt: string) => opt.trim()) : [],
         optionsString: form.value.fieldOptions || '' // Initialize optionsString

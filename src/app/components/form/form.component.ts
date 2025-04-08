@@ -23,6 +23,8 @@ export class FormComponent implements OnInit {
     isEditing?: boolean;
   }[] = [];
 
+  checkboxModel: { [fieldName: string]: { [option: string]: boolean } } = {};
+
   constructor(
     private formService: FormService,
     private dialog: MatDialog,
@@ -35,13 +37,44 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
     this.fields = this.formService.getFormData();
+
+    // Initialize checkboxModel structure
+    this.fields.forEach((field) => {
+      if (field.type === 'checkbox' && field.options) {
+        this.checkboxModel[field.name] = {};
+        field.options.forEach((option) => {
+          this.checkboxModel[field.name][option] = false;
+        });
+      }
+    });
   }
 
   onSubmit(form: any) {
+    // Extract checked options from checkboxModel
+    const selectedCheckboxValues: { [key: string]: string[] } = {};
+
+    for (const fieldName in this.checkboxModel) {
+      selectedCheckboxValues[fieldName] = Object.entries(this.checkboxModel[fieldName])
+        .filter(([_, checked]) => checked)
+        .map(([option]) => option);
+    }
+
     if (form.valid) {
-      console.log('Form submitted:', form.value);
+      const formOutput = {
+        ...form.value,
+        ...selectedCheckboxValues,
+      };
+
+      console.log('Form submitted:', formOutput);
       this.showToast('Form submitted successfully!');
       form.reset();
+
+      // Reset checkboxModel
+      for (const field in this.checkboxModel) {
+        for (const option in this.checkboxModel[field]) {
+          this.checkboxModel[field][option] = false;
+        }
+      }
     } else {
       Object.keys(form.controls).forEach((key) => {
         const control = form.controls[key];
@@ -76,6 +109,7 @@ export class FormComponent implements OnInit {
   clearFormData() {
     this.formService.clearFormData();
     this.fields = [];
+    this.checkboxModel = {};
     this.showToast('Form data cleared successfully!');
   }
 
