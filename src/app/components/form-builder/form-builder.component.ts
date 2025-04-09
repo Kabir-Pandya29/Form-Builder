@@ -67,6 +67,13 @@ export class FormBuilderComponent {
     }
   }
 
+
+  removeField(field: any) {
+    const index = this.fields.indexOf(field); // Find the index of the field to remove
+    this.fields.splice(index, 1); // Remove the field from the array
+    this.formService.updateFormData(this.fields); // Reflect changes instantly
+  }
+
   toggleEditField(field: any) {
     field.isEditing = !field.isEditing;
     if (field.isEditing) {

@@ -75,7 +75,8 @@
 <div class="mt-4">
   <div *ngFor="let field of fields; let i = index; trackBy: trackByIndex"    class="p-2 border rounded mb-2">
     <p class="mb-0"><strong>{{ field.label || field.name }}</strong> ({{ field.type }})</p>
-    <button mat-raised-button color="primary" (click)="toggleEditField(field)">Edit</button>
+    <button mat-raised-button class="my-2" color="primary" (click)="toggleEditField(field)">Edit</button>
+    <button mat-raised-button class="my-2" color="primary" (click)="removeField(field)">Remove</button>
     <div *ngIf="field.isEditing" class="mt-2">
       <mat-form-field appearance="fill" class="w-100">
         <mat-label>Field Name</mat-label>
